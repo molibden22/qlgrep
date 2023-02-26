@@ -25,6 +25,8 @@ public:
 
     bool isThereAnyTask() const;
 
+    std::string getUserTarget() const {return userTarget;};
+
 private:
     void setListOfDirectoriesToSearchFor(TaskType start_path);
     void printAplicationRunTime();
@@ -34,6 +36,7 @@ private:
     clockType::time_point start = clockType::now();
     std::list<Task> tasksQueue;
     std::vector<Worker> workers;
+    std::string userTarget{};
 
 };
 

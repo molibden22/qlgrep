@@ -1,23 +1,22 @@
 #ifndef TASK_H
 #define TASK_H
 
-#include <iostream>
 #include <filesystem>
+#include <iostream>
 
-   using TaskType = std::filesystem::path;
+using TaskType = std::filesystem::path;
 
 class Task
 {
 public:
-Task(int id, TaskType path);
+  Task(int id, TaskType path);
 
-int getId() const {return id;};
-TaskType getTaskPath() const {return taskPath;};
+  int getId() const { return id; };
+  TaskType getTaskPath() const { return taskPath; };
 
 private:
-    int id;
-    TaskType taskPath;
+  int id;
+  TaskType taskPath;
 };
-
 
 #endif // TASK_H
