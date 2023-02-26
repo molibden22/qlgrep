@@ -3,7 +3,7 @@
 
 Worker::Worker(int id, std::string name) : id (id), name(name)
 {
-    //doTask(task);
+    process();
 }
 Worker::~Worker()
 {
@@ -13,21 +13,35 @@ Worker::~Worker()
 void Worker::process()
 {
     std::cout << name << " start processing.." << std::endl;
-
+    if (auto task = taskTaker; task.has_value()){
+    doTask();
+    doWork(*task);
+    }
     std::cout << name << " finished task: " << std::endl;
 }
 
-void Worker::doTask(Task task)
+void Worker::doTask()
 {
     std::thread::id thread_id = std::this_thread::get_id();
     std::cout << "[>>Thread Id: "<< thread_id << "]";
     std::cout << "is  doing by: "; // << std::endl;
+
 }
 
 void Worker::doWork(Task task)
 {
     setListOfFilesToSearchTargetInGivenPath(task.getTaskPath());
+    for(auto file : filesList){
+        openFileAndSearchTarget(file.string(), "text" );//Threadpool::getUserTarget())
+    }
+
 }
+
+void Worker::setTaskTaker(std::optional<Task> newTaskTaker)
+{
+    taskTaker = newTaskTaker;
+}
+
 
 void Worker::setListOfFilesToSearchTargetInGivenPath(TaskType start_path){
     start_path.make_preferred();
@@ -53,9 +67,8 @@ void Worker::openFileAndSearchTarget(std::string fileName, std::string target){
         std::cout << "File <" << fileName << "> is open." << std::endl;
         int found_count {0};
         while (!file.eof()) {
-            std::getline(file, line); // pobieranie z pliku  1 linii
+            std::getline(file, line);
             lineNumber++;
-            //szukanie w linii
             if (line.find(target, 0) != std::string::npos) {
                 found_count++;
                 line = std::to_string(lineNumber) + ": " + line;

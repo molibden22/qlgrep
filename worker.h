@@ -4,11 +4,11 @@
 #include <thread>
 #include <list>
 #include <fstream>
+#include <optional>
 
 #include "task.h"
 
     using TaskType = std::filesystem::path;
-
 
 class Worker
 {
@@ -17,10 +17,11 @@ Worker(int id, std::string name);
 ~Worker();
 
   void process();
-  void doTask(Task task);
 
+  void doTask();
   void doWork(Task task);
 
+  void setTaskTaker(std::optional<Task> newTaskTaker);
 
 private:
   void setListOfFilesToSearchTargetInGivenPath(TaskType start_path);
@@ -29,11 +30,11 @@ private:
 private:
     int id;
     std::list<TaskType> filesList;
+    std::optional<Task> taskTaker;
 
 public:
     std::string name;
 
 };
-
 
 #endif // WORKER_H

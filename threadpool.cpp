@@ -19,16 +19,21 @@ Threadpool::~Threadpool()
 void Threadpool::initTasksQueue(TaskType userPath)
 {
     setListOfDirectoriesToSearchFor(userPath);
-
 }
 
 void Threadpool::initWorkers(sizeType workersCount)
 {
   for(sizeType i = 0; i < workersCount; ++i)
   {
-    workers.push_back(Worker(i, "[Worker: " + std::to_string(i) + "]"));
-    std::cout << workers.at(i).name << std::endl;
+    workers.push_back(std::make_shared<Worker>(i, "[Worker: " + std::to_string(i) + "]"));
+    std::cout << workers.at(i)->name << std::endl;
   }
+}
+
+void Threadpool::initCallbackForWorkers(){
+    for(auto& worker : workers) {
+        worker->setTaskTaker(takeNewTask());
+    }
 }
 
 bool Threadpool::isThereAnyTask() const
@@ -39,6 +44,17 @@ bool Threadpool::isThereAnyTask() const
 void Threadpool::addTask(Task task)
 {
     tasksQueue.push_back(task);
+}
+
+std::optional<Task> Threadpool::takeNewTask()
+{
+    if(isThereAnyTask()) {
+        auto task = tasksQueue.front();
+        tasksQueue.pop_front();
+        return task;
+    }
+    return std::nullopt;
+    std::cout << "No more tasks available";
 }
 
 void Threadpool::printAplicationRunTime()

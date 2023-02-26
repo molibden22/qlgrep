@@ -4,6 +4,7 @@
 #include <string.h>
 #include <chrono>
 #include <vector>
+#include <optional>
 
 #include "worker.h"
 #include "task.h"
@@ -19,10 +20,12 @@ public:
     ~Threadpool();
 
     void addTask(Task task);
+    std::optional<Task> takeNewTask();
 
     void initTasksQueue(TaskType userPath);
     void initWorkers(sizeType workersCount);
-
+    void initCallbackForWorkers();
+    std::optional<Task> taskTakerCallback{};
     bool isThereAnyTask() const;
 
     std::string getUserTarget() const {return userTarget;};
@@ -35,8 +38,8 @@ private:
 private:
     clockType::time_point start = clockType::now();
     std::list<Task> tasksQueue;
-    std::vector<Worker> workers;
-    std::string userTarget{};
+    std::vector<std::shared_ptr<Worker>> workers;
+    std::string userTarget{"text"};
 
 };
 
