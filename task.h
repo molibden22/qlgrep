@@ -2,19 +2,21 @@
 #define TASK_H
 
 #include <iostream>
+#include <filesystem>
+
+   using TaskType = std::filesystem::path;
 
 class Task
 {
 public:
-Task(int id);
+Task(int id, TaskType path);
 
-int getId() {return id;};
-int getTask() {return task;};
+int getId() const {return id;};
+TaskType getTaskPath() const {return taskPath;};
 
 private:
     int id;
-    int task;
-
+    TaskType taskPath;
 };
 
 

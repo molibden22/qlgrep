@@ -8,8 +8,8 @@ class Worker
 public:
 Worker(int id, std::string name);
 
-void doTask(Task task);
-
+//void doTask(Task task);
+  void doTask();
 
 private:
     int id;

@@ -2,10 +2,11 @@
 
 Worker::Worker(int id, std::string name) : id (id), name(name)
 {
-    doTask(Task(id));
+    //doTask(task);
+    doTask();
 }
 
-void Worker::doTask(Task task)
+void Worker::doTask()//doTask(Task task)
 {
     std::cout << "is  doing by: "; // << std::endl;
 }

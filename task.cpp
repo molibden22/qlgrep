@@ -1,6 +1,8 @@
 #include "task.h"
 
-Task::Task(int id) : id(id)
+   using TaskType = std::filesystem::path;
+
+Task::Task(int id, TaskType path) : id(id), taskPath(path)
 {
     std::cout << "(task id:" << id << ")";
 }
