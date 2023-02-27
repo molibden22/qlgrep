@@ -1,18 +1,11 @@
-#include <iostream>
-
-
 #include "threadpool.h"
-
+#include <iostream>
 
 int main(int argc, char* argv[])
 {
-  int count{4};
-  std::filesystem::path path {std::filesystem::current_path()};
+  Threadpool threadpool(argc, argv);
 
-  Threadpool threadpool(count);
-  threadpool.initTasksQueue(path);
-  threadpool.initWorkers(count);
-
+  std::cout << "end" << std::endl;
 
   return 0;
 }
