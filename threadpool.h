@@ -2,35 +2,26 @@
 #define THREADPOOL_H
 #include "task.h"
 #include "worker.h"
-#include "usersettings.h"
 #include <chrono>
 #include <future>
-#include <list>
-#include <optional>
 #include <string>
 #include <vector>
+#include <list>
 
 class Threadpool
 {
 public:
 
-  using PathType = std::filesystem::path;
-
-  Threadpool(int argc, char* argv[]);
+  Threadpool(int threadsCount);
   ~Threadpool();
 
   void addTask(const Task& task);
-  std::optional<Task> takeNextTask();
-  bool isThereAnyTask() const;
-
-  void initTasksQueue(PathType userPath);
-  void initWorkers(int workersCount);
-  void initCallbackForWorkers();
-
 
 private:
-  void setUserSettings(int argc, char* argv[]);
-  void setListOfDirectoriesToSearchFor(PathType start_path);
+  void initWorkers(int workersCount);
+  void initCallbackForWorkers();
+  bool isThereAnyTask() const;
+  std::optional<Task> takeNextTask();
 
 
 private:

@@ -3,15 +3,14 @@
 #include <iostream>
 #include <iomanip>
 
-
 class Printer
 {
 public:
+
     Printer();
 
     void printManual();
     void printConsoleOutput();
-
 
 };
 

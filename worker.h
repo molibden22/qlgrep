@@ -2,7 +2,6 @@
 #define WORKER_H
 #include "task.h"
 #include <fstream>
-#include <functional>
 #include <future>
 #include <iostream>
 #include <list>
@@ -12,29 +11,31 @@
 class Worker
 {
 public:
-  using TaskType = std::filesystem::path;
+  using PathType = std::filesystem::path;
+  using OptionalTaskType = std::optional<Task>;
+  using TaskTakerType = std::function<OptionalTaskType()>;
 
   Worker(int id, const std::string& name);
   ~Worker() noexcept;
 
   void process();
   void doTask(Task task);
-  void doWork(Task task);
+  //void doWork(Task task);
 
-  void setTaskTaker(const std::optional<Task>& newTaskTaker);
+  void setTaskTaker(const TaskTakerType& newTaskTaker);
   std::vector<std::string>& getTaskResultData();
 
 private:
-  void setListOfFilesToSearchTargetInGivenPath(TaskType start_path);
-  void processInputFile(TaskType filepath, std::string target);
+  void setListOfFilesToSearchTargetInGivenPath(PathType start_path);
+  void processInputFile(PathType filepath, std::string target);
 
 private:
   int id;
   std::string name;
-  std::list<TaskType> filesList;
+  std::list<PathType> filesList;
   std::vector<std::string> taskResultsData;
   std::vector<std::string> taskLogData;
-  std::optional<Task> taskTaker{std::nullopt};
+  TaskTakerType taskTaker{ [](){ return std::nullopt;} };
   std::atomic<bool> stopProcessing;
   std::future<void> future;
 };

@@ -7,10 +7,11 @@ class UserSettings
 {
 public:
     using PathType = std::filesystem::path;
+    using threadsType = int;
+
     UserSettings();
 
 void setUserSettings(int argc, char* argv[]);
-
 
 public:
     PathType default_dir{std::filesystem::current_path()};
