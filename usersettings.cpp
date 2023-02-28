@@ -2,10 +2,10 @@
 
 using PathType = std::filesystem::path;
 
-UserSettings::UserSettings()
+UserSettings::UserSettings(int argc, char* argv[])
 {
+  setUserSettings(argc, argv);
 }
-
 
 void UserSettings::setUserSettings(int argc, char* argv[])
 {
@@ -19,7 +19,7 @@ void UserSettings::setUserSettings(int argc, char* argv[])
   {
     if(count == 1)
       userTarget = argv_input[count];
-    if(argv_input[count] == "d" || argv_input[count] == "--dir")
+    if(argv_input[count] == "-d" || argv_input[count] == "--dir")
     {
       if(argv_input[count + 1] != "")
       {

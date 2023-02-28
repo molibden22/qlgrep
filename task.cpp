@@ -1,28 +1,30 @@
 #include "task.h"
 
-using TaskType = std::filesystem::path;
+using PathType = std::filesystem::path;
 
-Task::Task(int id, TaskType path)
+Task::Task(int id, PathType path)
   : id(id)
   , taskPath(path)
 {
-  // std::cout << "(taskId:" << id << ")";
+  //std::cout << "(taskId:" << id << ")";
 }
 
-void setListOfDirectoriesToSearchFor(PathType start_path);
-void setListOfDirectoriesToSearchFor(TaskType start_path)
+void Task::doWork(Metadata& metadata)
 {
-  std::cout << start_path << std::endl;
-  for(int i{0}; auto const& dir_entry : std::filesystem::recursive_directory_iterator(start_path))
+  setListOfFilesToSearchTargetInGivenPath(taskPath);
+  // search files & get data
+  // write data to metadata
+}
+
+void Task::setListOfFilesToSearchTargetInGivenPath(PathType path)
+{
+  for(auto const& dir_entry : std::filesystem::directory_iterator(path))
   {
-    TaskType path = dir_entry;
-    if(path.filename().extension() == "")
+      if(PathType(dir_entry).extension() != "")
     {
-      // tasksQueue.push_back(Task(++i, path));
-      //addTask(Task(++i, path));
+      filesToSearchList.push_back(dir_entry);
+      std::cout << "path to filename : " << dir_entry << '\n';
     }
   }
 }
-
-
 

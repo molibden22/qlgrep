@@ -6,12 +6,11 @@
 class Printer
 {
 public:
-
     Printer();
+    ~Printer();
 
     void printManual();
     void printConsoleOutput();
-
 };
 
 #endif // PRINTER_H

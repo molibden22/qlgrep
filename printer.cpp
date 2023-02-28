@@ -4,6 +4,11 @@ Printer::Printer()
 {
 }
 
+Printer::~Printer()
+{
+    printConsoleOutput();
+}
+
 void Printer::printManual()
 {
   std::cout << "------------- Manual --------------\n"
@@ -16,7 +21,7 @@ void Printer::printManual()
             << std::setw(45) << "-r , --result_file <result_file_name> "
             << "set result_file name\n"
             << std::setw(45) << "-t , --threads <threads number> "
-            << "number of threads in the pool\n";
+            << "number of threads in the pool (1-4)\n";
 }
 
 void Printer::printConsoleOutput()

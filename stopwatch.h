@@ -1,21 +1,24 @@
 #ifndef STOPWATCH_H
 #define STOPWATCH_H
-#include <iostream>
 #include <chrono>
+#include <iostream>
 
 class Stopwatch
 {
 public:
-    using clockType = std::chrono::high_resolution_clock;
+  using clockType = std::chrono::high_resolution_clock;
 
-    Stopwatch() : start(clockType::now()){}
-    ~Stopwatch() { printAplicationRunTime(); }
+  Stopwatch()
+    : start(clockType::now())
+  {
+  }
+  ~Stopwatch() { printAplicationRunTime(); }
 
-    void printAplicationRunTime();
+  void printAplicationRunTime();
 
 private:
-    clockType::time_point start;
-    clockType::time_point stop;
+  clockType::time_point start;
+  clockType::time_point stop;
 };
 
 void Stopwatch::printAplicationRunTime()
