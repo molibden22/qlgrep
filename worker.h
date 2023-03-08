@@ -16,19 +16,20 @@ public:
   using OptionalTaskType = std::optional<Task>;
   using TaskTakerType = std::function<OptionalTaskType()>;
 
-  Worker(int id, const std::string& name);
+  Worker(const int id, const std::string& name);
   ~Worker() noexcept;
 
+  void setTaskTaker(const TaskTakerType& newTaskTaker);
+  std::shared_ptr<Metadata>& getPtrToFinalWorkerResult();
+
+private:
   void process();
   void doTask(Task task);
-
-  void setTaskTaker(const TaskTakerType& newTaskTaker);
-  std::vector<Metadata>& getTaskResultData();
 
 private:
   int id;
   std::string name;
-  std::vector<Metadata> taskResultsData;
+  std::shared_ptr<Metadata> ptrToFinalWorkerResult;
   TaskTakerType taskTaker{ [](){ return std::nullopt;} };
   std::atomic<bool> stopProcessing;
   std::future<void> future;

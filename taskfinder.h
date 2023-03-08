@@ -12,6 +12,8 @@ public:
 
   void setListOfDirectoriesToSearchFor(PathType start_path);
   PathType getDirectoryToSearch();
+  size_t getSizeOfDirectory();
+  bool isDirectoryToSerachEmpty();
 
 private:
   PathType start_path{std::filesystem::current_path()};

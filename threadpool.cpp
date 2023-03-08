@@ -4,13 +4,19 @@ Threadpool::Threadpool(int threadsCount)
 {
   initWorkers(threadsCount);
   initCallbackForWorkers();
+  ptrToVecResultsWorkers = std::make_shared<std::vector<std::shared_ptr<Metadata>>>();
 }
 
 Threadpool::~Threadpool()
 {
-   while(isThereAnyTask()){
-       std::this_thread::sleep_for(std::chrono::seconds(1));
-   }
+  while(isThereAnyTask())
+  {
+    //loop need to complete tasks
+  }
+  for(auto& worker : workers)
+  {
+    (*ptrToVecResultsWorkers).push_back(worker->getPtrToFinalWorkerResult());
+  }
 }
 
 void Threadpool::addTask(const Task& task)
@@ -31,7 +37,7 @@ void Threadpool::initCallbackForWorkers()
 {
   for(auto& worker : workers)
   {
-    worker->setTaskTaker([this](){return takeNextTask();});
+    worker->setTaskTaker([this]() { return takeNextTask(); });
   }
 }
 
@@ -49,6 +55,5 @@ std::optional<Task> Threadpool::takeNextTask()
     tasksQueue.pop_front();
     return task;
   }
-  //std::cout << "No more tasks available";
   return std::nullopt;
 }

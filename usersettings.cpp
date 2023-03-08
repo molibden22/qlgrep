@@ -40,6 +40,8 @@ void UserSettings::setUserSettings(int argc, char* argv[])
     else if(argv_input[count] == "-t" || argv_input[count] == "--therads")
     {
       threadsCount = std::stoi(argv_input[++count]);
+      if (threadsCount > 4) threadsCount = 4;
+      if (threadsCount < 1) threadsCount = 1;
       count++;
     }
     else

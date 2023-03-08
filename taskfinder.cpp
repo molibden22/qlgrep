@@ -13,13 +13,17 @@ Taskfinder::PathType Taskfinder::getDirectoryToSearch()
 
 void Taskfinder::setListOfDirectoriesToSearchFor(PathType start_path)
 {
-  // std::cout << start_path << std::endl;
-  for(int i{0}; auto const& dir_entry : std::filesystem::recursive_directory_iterator(start_path))
+  for(int i{0}; auto const& dir_entry : std::filesystem::recursive_directory_iterator(
+          start_path, std::filesystem::directory_options::skip_permission_denied))
   {
-    PathType path = dir_entry;
-    if(path.filename().extension() == "")
+    if( dir_entry.is_directory() )
     {
-      directriesToSearchList.push_back(path);
+      directriesToSearchList.push_back(dir_entry);
     }
   }
+}
+
+bool Taskfinder::isDirectoryToSerachEmpty()
+{
+  return directriesToSearchList.empty();
 }

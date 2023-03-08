@@ -1,10 +1,11 @@
 #include "worker.h"
 
-Worker::Worker(int id, const std::string& name)
+Worker::Worker(const int id, const std::string& name)
   : id(id)
   , name(name)
   , stopProcessing(false)
 {
+  ptrToFinalWorkerResult = std::make_shared<Metadata>();
   future = std::async(std::launch::async, &Worker::process, this);
 }
 Worker::~Worker() noexcept
@@ -14,7 +15,6 @@ Worker::~Worker() noexcept
 
 void Worker::process()
 {
-  std::cout << name << " start processing.." << std::endl;
   while(!stopProcessing)
   {
     if(auto task = taskTaker(); task.has_value())
@@ -22,17 +22,11 @@ void Worker::process()
       doTask(*task);
     }
   }
-  std::cout << name << " finished processing: " << std::endl;
 }
 
 void Worker::doTask(Task task)
 {
-  std::thread::id thread_id = std::this_thread::get_id();
-  std::cout << "[>>Thread Id: " << thread_id  << " is doing task: " << task.getId() << "]" << std::endl;
-  Metadata outData;
-  task.doWork(outData);
-  taskResultsData.push_back(outData);
-  std::cout << this->name << " finished task: " << task.getId() << std::endl;
+  task.doWork(*ptrToFinalWorkerResult);
 }
 
 void Worker::setTaskTaker(const TaskTakerType& newTaskTaker)
@@ -40,7 +34,7 @@ void Worker::setTaskTaker(const TaskTakerType& newTaskTaker)
   taskTaker = newTaskTaker;
 }
 
-std::vector<Metadata>& Worker::getTaskResultData()
+std::shared_ptr<Metadata>& Worker::getPtrToFinalWorkerResult()
 {
-  return taskResultsData;
+  return ptrToFinalWorkerResult;
 }
